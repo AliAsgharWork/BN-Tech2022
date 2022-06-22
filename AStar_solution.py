@@ -125,6 +125,63 @@ def main():
     path = astar(maze, start, end)
     print(path)
 
+    def randomObs(maze, start, end, nn):  # Part of Section 2
+        # This function generates a random points of obstacles in the map that is feed in
+        numofrando = nn
+        maze_array = numpy.array(maze)
+        maze_shape = maze_array.shape
+        rando_list = []
+        # Find existing obstacles
+        exists_cood = []
+        result = numpy.where(maze_array == 1)
+        listOfCoordinates = list(zip(result[0], result[1]))
+        for cord in listOfCoordinates:
+            exists_cood.append(cord)
+
+        while nn > 0:
+
+            x = maze_shape[0]
+            y = maze_shape[1]
+
+            x_random = random.randint(0, x-1)
+            y_random = random.randint(0, y-1)
+            random_cood = (x_random, y_random)
+            # print(random_cood)
+
+            if random_cood == start:
+                pass
+            elif random_cood == end:
+                pass
+            else:
+                # print([True for x1 in rando_list if x1 == random_cood])
+
+                val = [True for x1 in rando_list if x1 == random_cood]
+                val2 = [True for x1 in rando_list if x1 == exists_cood]
+
+                if val != [True] and val2 != [True]:
+                    rando_list.append(random_cood)
+                    nn = nn-1
+            # print(rando_list, len(rando_list))
+
+        # print(numofrando - len(rando_list))
+        # if numofrando - len(rando_list) != 0:
+        #     print("not eno")
+
+        for i in rando_list:
+            maze[i[0]][i[1]] = 1
+
+        return maze
+
+    inf = float('inf')
+
+    new_maze = randomObs(maze, start, end, 20)
+    print('\n'.join([''.join(['{:4}'.format(item) for item in row])
+                     for row in new_maze]))
+    # print(new_maze)
+
+    path = astar(new_maze, start, end)
+    print(path)
+
 
 if __name__ == '__main__':
     main()
